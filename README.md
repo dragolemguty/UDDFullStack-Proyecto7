@@ -1,3 +1,3 @@
 # UDDFullStack-Proyecto7
 
-Proyecto Front y Back
+Proyecto FrontEnd y BackEnd
