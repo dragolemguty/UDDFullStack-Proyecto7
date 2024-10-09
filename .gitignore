@@ -26,3 +26,7 @@ dist-ssr
 package-lock.json
 node_modules/
 .env
+backend/node_modules
+backend/package-lock.json
+backend/.env
+
