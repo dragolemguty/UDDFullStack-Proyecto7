@@ -56,6 +56,25 @@ router.get("/", auth, findAll);
  *         description: Usuario obtenido con éxito
  */
 router.get("/:id", auth, findOne);
+
+/**
+ * @swagger
+ * /users/me:
+ *   get:
+ *     summary: Obtener el usario actual
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Usuario obtenido con éxito
+ */
 router.get("/me", auth, getMe);
 
 /**
