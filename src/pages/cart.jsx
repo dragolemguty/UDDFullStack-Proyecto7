@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import PayPalButton from './payPalButton';
+import PayPalButton from '../components/payPalButton';
 
 const Cart = () => {
     const [products, setProducts] = useState([]);
