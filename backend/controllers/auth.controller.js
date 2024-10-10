@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 require("dotenv").config();
 
 const signup = async (req, res) => {
+  console.log(req.body);
   try {
     const { name, username, password, active } = req.body;
 
@@ -37,13 +38,13 @@ const signin = async (req, res) => {
     if (!passwordCorrect) {
       return res.status(400).json({ message: 'el nombre de usuario o contraseña no es correcto' });
     }
-
-    const payload = { user: { id: theUser.id } };
+    console.log("User ID antes de buscar:", theUser._id); 
+    const payload = { user: { _id: theUser._id } };
     jwt.sign(
       payload,
       process.env.SECRET,
       {
-        expiresIn: 3_600_000
+        expiresIn: '1h'
       },
       (error, token) => {
         if (error) throw error;

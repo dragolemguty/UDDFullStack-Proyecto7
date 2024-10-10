@@ -17,7 +17,7 @@ router.use("/eventos", guestEventRouter); // Rutas para eventos de huésped
 router.use("/habitaciones", roomRouter); // Rutas para habitaciones
 router.use("/guest", guestRouter); // Rutas para huespedes
 router.use("/ranks", guestRankRouter); // Rutas para ranks
-router.use("/", authRoutes);
+router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
 
 // Ruta para la documentación de Swagger

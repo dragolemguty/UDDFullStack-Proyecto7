@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require('../middleware/authorization');
 
-const {createInitialUser, findAll, findOne, create, update, remove } = require("../controllers/user.controller");
+const {getMe, createInitialUser, findAll, findOne, create, update, remove } = require("../controllers/user.controller");
 
 /**
  * @swagger
@@ -56,6 +56,7 @@ router.get("/", auth, findAll);
  *         description: Usuario obtenido con éxito
  */
 router.get("/:id", auth, findOne);
+router.get("/me", auth, getMe);
 
 /**
  * @swagger

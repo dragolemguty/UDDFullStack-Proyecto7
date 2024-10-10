@@ -10,8 +10,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-//const routes = require("./routes");
-//app.use(process.env.URL_BASE + "/", routes);
+const routes = require("./routes");
+app.use(process.env.URL_BASE + "/", routes);
 
 connectDB();
 
