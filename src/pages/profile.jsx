@@ -15,8 +15,7 @@ const Profile = () => {
           const response = await fetch('http://localhost:3000/api/users/me', {  // Aquí usamos /me
             method: 'GET',
             headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
             },
           });
 

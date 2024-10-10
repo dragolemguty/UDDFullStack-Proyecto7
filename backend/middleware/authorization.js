@@ -9,11 +9,11 @@ module.exports = (req, res, next) => {
   try {
     let [type, token] = authorization.split(" ");
     console.log("Token:", token); // <-- Log para verificar el token
-    if (type === 'Token' || type === 'Bearer') {
-      const openToken = jwt.verify(token, process.env.SECRET);
-      console.log("Decoded Token:", openToken); // <-- Log del token decodificado
+    if (type === 'Bearer') {
+      const decodedToken = jwt.verify(token, process.env.SECRET);
+      console.log("Decoded Token:", decodedToken); // <-- Log del token decodificado
       
-      req.user = openToken.user;
+      req.user = decodedToken; // Asigna el token decodificado a req.user
       next();
     } else {
       return res.status(401).json({ message: "Acceso no autorizado" });
