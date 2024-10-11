@@ -4,17 +4,12 @@ import Signup from './pages/signup';
 import Login from './pages/login';
 import Profile from './pages/profile';
 import Index from './pages/index';
+import Navbar from './components/navbar';
 
 function App() {
   return (
-    <>
-      <div className="mx-auto text-2xl px-10">
-        <h1 className="text-3xl font-bold underline">
-          Pagina Hotelera
-        </h1>
-      </div>
-
       <Router>
+      <Navbar />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/signup" element={<Signup />} />
@@ -22,7 +17,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </Router>
-    </>
+    
   );
 }
 
