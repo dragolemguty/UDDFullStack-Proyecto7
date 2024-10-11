@@ -2,45 +2,48 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
-  const [username, setUsername] = useState('');
+  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-    } else {
-      const fetchProfile = async () => {
-        try {
-          const response = await fetch('http://localhost:3000/api/users/me', {  // Aquí usamos /me
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`
-            },
-          });
+    const fetchProfile = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found, redirecting to login');
+        navigate('/login'); // Redirige si no hay token
+        return; // Detén la ejecución si no hay token
+      }
 
-          if (response.ok) {
-            const data = await response.json();
-            setUsername(data.user.username);  // Asigna el nombre de usuario a la variable de estado
-          } else {
-            localStorage.removeItem('token');
-            navigate('/login'); // Si el token no es válido, redirige a login
-          }
-        } catch (error) {
-          console.error('Error obteniendo el perfil:', error);
-          localStorage.removeItem('token');
-          navigate('/login'); // Si hay error, redirige a login
+      const response = await fetch('http://localhost:3000/api/profile', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         }
-      };
+      });
 
-      fetchProfile();
-    }
-  }, [navigate]);
+      if (response.ok) {
+        const data = await response.json();
+        setUserData(data);
+      } else {
+        console.error('Error al obtener el perfil');
+      }
+    };
+
+    fetchProfile();
+  }, [navigate]); // Añade navigate como dependencia
 
   return (
     <div>
-      <h1>Perfil de {username}</h1>
-      <p>Información dummy sobre el hotel.</p>
+      <h1>Perfil</h1>
+      {userData ? (
+        <div>
+          <p>Nombre: {userData.name}</p>
+          <p>Usuario: {userData.username}</p>
+        </div>
+      ) : (
+        <p>Cargando perfil...</p>
+      )}
     </div>
   );
 };

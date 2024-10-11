@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const auth = require('../middleware/authorization');
+const auth2 = require('../middleware/authorization2');
 
-const {getMe, createInitialUser, findAll, findOne, create, update, remove } = require("../controllers/user.controller");
+const { createInitialUser, findAll, findOne, create, update, remove } = require("../controllers/user.controller");
 
 /**
  * @swagger
@@ -10,6 +11,7 @@ const {getMe, createInitialUser, findAll, findOne, create, update, remove } = re
  *   name: User
  *   description: Endpoints para la gestión de usuarios
  */
+
 
 /**
  * @swagger
@@ -37,6 +39,8 @@ router.get("/init", createInitialUser);
  */
 router.get("/", auth, findAll);
 
+
+
 /**
  * @swagger
  * /users/{id}:
@@ -57,25 +61,7 @@ router.get("/", auth, findAll);
  */
 router.get("/:id", auth, findOne);
 
-/**
- * @swagger
- * /users/me:
- *   get:
- *     summary: Obtener el usario actual
- *     tags: [User]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Usuario obtenido con éxito
- */
-router.get("/me", auth, getMe);
+
 
 /**
  * @swagger
