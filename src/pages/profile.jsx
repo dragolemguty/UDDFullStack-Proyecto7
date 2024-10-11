@@ -30,7 +30,7 @@ const Profile = () => {
         } catch (error) {
           console.error('Error obteniendo el perfil:', error);
           localStorage.removeItem('token');
-          navigate('/login'); // Si hay error, redirige a login
+          navigate('/login'); // Si hay error, redirige a loginn
         }
       };
 

@@ -15,7 +15,7 @@ const Login = () => {
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem('token', data.token); // Guarda el token
-      navigate('/profile'); // Redirige a perfil si el login es exitoso
+      navigate('/profile'); // Redirige a perfil si el login es exitosoo
     } else {
       alert('Error en el inicio de sesión');
     }
