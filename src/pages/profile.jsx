@@ -2,48 +2,46 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
-  const [userData, setUserData] = useState(null);
+  const [username, setUsername] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('No token found, redirecting to login');
-        navigate('/login'); // Redirige si no hay token
-        return; // Detén la ejecución si no hay token
-      }
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+    } else {
+      const fetchProfile = async () => {
+        try {
+          const response = await fetch('http://localhost:3000/api/users/me', {  // Aquí usamos /me
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            },
+          });
 
-      const response = await fetch('http://localhost:3000/api/profile', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          if (response.ok) {
+            const data = await response.json();
+            // Asignamos directamente el username del objeto data
+            setUsername(data.username);  
+          } else {
+            localStorage.removeItem('token');
+            navigate('/login'); // Si el token no es válido, redirige a login
+          }
+        } catch (error) {
+          console.error('Error obteniendo el perfil:', error);
+          localStorage.removeItem('token');
+          navigate('/login'); // Si hay error, redirige a login
         }
-      });
+      };
 
-      if (response.ok) {
-        const data = await response.json();
-        setUserData(data);
-      } else {
-        console.error('Error al obtener el perfil');
-      }
-    };
-
-    fetchProfile();
-  }, [navigate]); // Añade navigate como dependencia
+      fetchProfile();
+    }
+  }, [navigate]);
 
   return (
     <div>
-      <h1>Perfil</h1>
-      {userData ? (
-        <div>
-          <p>Nombre: {userData.name}</p>
-          <p>Usuario: {userData.username}</p>
-        </div>
-      ) : (
-        <p>Cargando perfil...</p>
-      )}
+      <h1>Perfil de {username}</h1>
+      <p>Información dummy sobre el hotel.</p>
     </div>
   );
 };
