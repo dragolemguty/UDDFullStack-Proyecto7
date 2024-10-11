@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
       const decodedToken = jwt.verify(token, process.env.SECRET);
       console.log("Decoded Token:", decodedToken); // <-- Log del token decodificado
       
-      req.user = decodedToken; // Asigna el token decodificado a req.user
+      req = decodedToken; // Asigna el token decodificado a req.user
       next();
     } else {
       return res.status(401).json({ message: "Acceso no autorizado" });

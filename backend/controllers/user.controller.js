@@ -49,21 +49,6 @@ const findOne = async (req, res) => {
 }
 
 
-const getMe = async (req, res) => {
-  try {
-    const userId = req.user._id;  // Asegúrate de que esto está usando el _id correctamente
-    console.log("User ID from token:", userId); // Verifica que se esté obteniendo bien el ID
-
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "Usuario no encontrado" });
-    }
-    res.json(user);
-  } catch (error) {
-    console.error("Error en getMe:", error);
-    res.status(500).json({ message: "Error en el servidor", error });
-  }
-}
 
 const create = async (req, res) => {
   try {
@@ -105,4 +90,4 @@ const remove = async (req, res) => {
   }
 }
 
-module.exports = {getMe, createInitialUser, create, update, remove, findAll, findOne };
+module.exports = { createInitialUser, create, update, remove, findAll, findOne };
