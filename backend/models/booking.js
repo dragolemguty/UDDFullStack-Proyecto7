@@ -9,6 +9,7 @@ const bookingSchema = new mongoose.Schema({
   departure_date: { type: Date, required: true },
   nights_qty: { type: Number, required: false },
   guests_qty: { type: Number, required: true },
+  price: {type: Number, required: false},
   is_modified: { type: Boolean, default: false },
   is_paid: { type: Boolean, default: false },
   is_cancelled: { type: Boolean, default: false },

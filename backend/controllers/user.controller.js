@@ -10,6 +10,7 @@ const createInitialUser = async (req, res) => {
     const initialUser = new User({
       _id: new mongoose.Types.ObjectId("66fb68ba3d5eb488200c7917"), // Asigna manualmente el _id
       name: "JuanJo",
+      email: "dragolem@gmail.com",
       username: "dragolem",
       password: hashedPassword,
       active: false
@@ -52,12 +53,12 @@ const findOne = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    const { name, username, password, active } = req.body;
+    const { name, email, username, password, active } = req.body;
 
     const salt = await bcryptjs.genSalt(11);
     const hashedPassword = await bcryptjs.hash(password, salt);
 
-    const nuevoUsuario = await User.create({ name, username, password: hashedPassword, active });
+    const nuevoUsuario = await User.create({ name, email, username, password: hashedPassword, active });
     res.json(nuevoUsuario);
   } catch (error) {
     console.error(error);

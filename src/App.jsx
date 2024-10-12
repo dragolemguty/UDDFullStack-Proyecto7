@@ -5,6 +5,9 @@ import Login from './pages/login';
 import Profile from './pages/profile';
 import Index from './pages/index';
 import Navbar from './components/navbar';
+import Reserve from './pages/reserve';
+import BookingDetails from './pages/bookingDetails';
+import Cart from './pages/cart';
 
 function App() {
   return (
@@ -15,6 +18,9 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/reserve" element={<Reserve />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/booking" element={<BookingDetails />} />
         </Routes>
       </Router>
     

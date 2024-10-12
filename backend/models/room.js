@@ -8,7 +8,9 @@ const roomSchema = new mongoose.Schema({
   capacity: { type: Number, required: true },
   orientation: { type: String, required: true },
   room_class: { type: String, required: true },
-  amenities: { type: String, required: true }
+  amenities: { type: String, required: true },
+  price: { type: Number, required: false },
+  currency: { type: String, required: false }
 });
 
 const Room = mongoose.model('Room', roomSchema);

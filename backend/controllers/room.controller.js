@@ -14,7 +14,9 @@ const createInitialRooms = async (req, res) => {
         capacity: 2,
         orientation: 'P',
         room_class: 'Simple',
-        amenities: '1 cama'
+        amenities: '1 cama',
+        price: 50,
+        currency: 'USD'
       },
       { _id: new mongoose.Types.ObjectId("66fb61daa1fafb57a4a3bb1a"),
         id_room: 2,
@@ -24,7 +26,9 @@ const createInitialRooms = async (req, res) => {
         capacity: 3,
         orientation: 'O',
         room_class: 'Doble',
-        amenities: '2 camas, AC'
+        amenities: '2 camas, AC',
+        price: 70,
+        currency: 'USD'
       },
       { _id: new mongoose.Types.ObjectId("66fb61daa1fafb57a4a3bb1b"),
         id_room: 3,
@@ -34,7 +38,10 @@ const createInitialRooms = async (req, res) => {
         capacity: 4,
         orientation: 'S',
         room_class: 'Suit Familiar',
-        amenities: '3 camas'
+        amenities: '3 camas',
+        price: 90,
+        currency: 'USD'
+        
       },
       { _id: new mongoose.Types.ObjectId("66fb61daa1fafb57a4a3bb1c"),
         id_room: 4,
@@ -44,7 +51,9 @@ const createInitialRooms = async (req, res) => {
         capacity: 3,
         orientation: 'N',
         room_class: 'Suit Deluxe',
-        amenities: '3 camas'
+        amenities: '3 camas',
+        price: 100,
+        currency: 'USD'
       },
       { _id: new mongoose.Types.ObjectId("66fb61daa1fafb57a4a3bb1d"),
         id_room: 5,
@@ -54,7 +63,9 @@ const createInitialRooms = async (req, res) => {
         capacity: 5,
         orientation: 'NO',
         room_class: 'Suit Presidencial',
-        amenities: '4 camas'
+        amenities: '4 camas',
+        price: 150,
+        currency: 'USD'
       }
     ];
 
@@ -71,7 +82,7 @@ const createInitialRooms = async (req, res) => {
 const findAllRooms = async (req, res) => {
   try {
     const rooms = await Room.find({});
-    res.json({ rooms });
+    res.status(200).json(rooms);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error obteniendo las habitaciones' });
