@@ -31,6 +31,7 @@ const Reserve = () => {
     if (token) {
       navigate('/booking', { state: { room } });  // Redirige al carrito con la room seleccionada
     } else {
+      sessionStorage.setItem('fromBookingFlow', 'true'); // Señal de flujo de reserva
       navigate('/login', { state: { redirectTo: '/booking', room } });  // Redirige a login, manteniendo la info
     }
   };
