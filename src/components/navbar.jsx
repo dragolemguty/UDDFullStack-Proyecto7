@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+const BACKEND_URL = import.meta.env.VITE_URL_BACKEND;
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -11,29 +11,32 @@ const Navbar = () => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token); // Establece true si existe token
 
-    if (token) {
-      const fetchReservationsCount = async () => {
-        try {
-          const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/cart/count`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setReservationsCount(response.data.count);
-        } catch (error) {
-          console.error('Error fetching reservations count:', error);
-        }
-      };
-
-      fetchReservationsCount();
+    const savedBookings = localStorage.getItem('bookingData');
+    if (savedBookings) {
+      const bookingsArray = JSON.parse(savedBookings);
+      setReservationsCount(bookingsArray.length); // Establece el número de reservas
     }
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const token = localStorage.getItem('token');
+    const userId = JSON.parse(atob(token.split('.')[1])).user._id;
+    const reservations = localStorage.getItem('reservationsArray');
+  
+    // Llamar al endpoint para actualizar el carrito
+    await fetch(`${BACKEND_URL}/cart`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, reservations }),
+    });
+  
     localStorage.removeItem('token');
+    localStorage.removeItem('reservationsArray');
+    localStorage.removeItem('bookingData');
     setIsLoggedIn(false);
     navigate('/login');
   };
+
 
   return (
     <nav className="bg-blue-500 p-4 flex justify-between items-center">
@@ -57,7 +60,7 @@ const Navbar = () => {
         ) : (
           <>
             <a href="/signup" className="text-white mr-4">Signup</a>
-            <a href="/login" className="bg-white text-blue-500 py-2 px-4 rounded">Login</a>
+            <a href="/login" className="text-white">Login</a>
           </>
         )}
       </div>

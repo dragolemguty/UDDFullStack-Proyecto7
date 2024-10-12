@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+const BACKEND_URL = import.meta.env.BACKEND_URL;
 
 const Profile = () => {
   const [username, setUsername] = useState('');
@@ -12,7 +13,7 @@ const Profile = () => {
     } else {
       const fetchProfile = async () => {
         try {
-          const response = await fetch('http://localhost:3000/api/users/me', {
+          const response = await fetch(`${BACKEND_URL}/users/me`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`
