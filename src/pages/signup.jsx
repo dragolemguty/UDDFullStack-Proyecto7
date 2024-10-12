@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+const BACKEND_URL = import.meta.env.VITE_URL_BACKEND;
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -9,7 +10,7 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const handleSignup = async () => {
-    const response = await fetch('http://localhost:3000/api/auth/signup', {
+    const response = await fetch(`${BACKEND_URL}/auth/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, username, password }), // Incluimos email

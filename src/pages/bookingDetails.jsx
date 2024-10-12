@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+const BACKEND_URL = import.meta.env.VITE_URL_BACKEND;
 
 const BookingDetails = () => {
   const navigate = useNavigate();
@@ -40,23 +41,28 @@ const BookingDetails = () => {
       booking_date: new Date(bookingDate) // Fecha actual
     };
 
+    // Hacer el POST al backend
     try {
-      const response = await fetch('http://localhost:3000/api/reservas/', {
+      const response = await fetch(`${BACKEND_URL}/reservas/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Incluye el token JWT en el header
         },
         body: JSON.stringify(bookingData),
       });
 
       if (response.ok) {
+
+        localStorage.setItem('bookingData', JSON.stringify(bookingData));
+
+        // Redirigir al carrito
         navigate('/cart');
       } else {
-        console.error('Error al crear la reserva:', response.statusText);
+        console.error('Error al guardar la reserva en el backend');
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error al hacer la solicitud al backend', error);
     }
   };
 

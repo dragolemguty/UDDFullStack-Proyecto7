@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+const BACKEND_URL = import.meta.env.VITE_URL_BACKEND;
 
 const Reserve = () => {
   const [rooms, setRooms] = useState([]);
@@ -8,7 +9,7 @@ const Reserve = () => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/rooms/'); // URL del backend para obtener rooms
+        const response = await fetch(`${BACKEND_URL}/rooms/`); // URL del backend para obtener rooms
         const data = await response.json();
         console.log(data);
         if (Array.isArray(data)) {

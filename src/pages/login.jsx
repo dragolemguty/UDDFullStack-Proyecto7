@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+const BACKEND_URL = import.meta.env.VITE_URL_BACKEND;
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,18 +14,66 @@ const Login = () => {
     setErrorMessage(''); // Limpiar el mensaje de error antes de enviar
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/signin', {
+      const url = `${BACKEND_URL}/auth/signin/`;
+      console.log('URL:', url); // Depuración: Mostrar la URL en la consola
+
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error en el servidor');
+      }
+
       const data = await response.json();
 
       if (data.token) {
         localStorage.setItem('token', data.token);
         sessionStorage.setItem('fromLoginOrBooking', 'true'); // Establecer la bandera
+        const userId = JSON.parse(atob(data.token.split('.')[1])).user._id;
+        console.log('UserId:', userId);
+
+        const fetchCart = async (userId) => {
+          try {
+            const cartUrl = `${BACKEND_URL}/cart/${userId}`;
+            console.log('Cart URL:', cartUrl); // Depuración: Mostrar la URL del carrito en la consola
+        
+            const response = await fetch(cartUrl);
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.message || 'Error al obtener el carrito');
+            }
+        
+            const cart = await response.json();
+            console.log('Cart Data:', cart); // Depuración: Mostrar los datos del carrito en la consola
+        
+            if (cart.cart && cart.cart.reservations) {
+              // Parsear la cadena de texto JSON en un objeto JavaScript
+              const parsedReservations = JSON.parse(cart.cart.reservations);
+        
+              // Normalizar los datos si es necesario
+              const normalizedReservations = parsedReservations.map(reservation => {
+                // Aquí puedes hacer cualquier normalización adicional si es necesario
+                return reservation;
+              });
+        
+              localStorage.setItem('reservationsArray', JSON.stringify(normalizedReservations));
+              console.log('Reservations saved to localStorage:', normalizedReservations); // Depuración: Mostrar las reservas guardadas en la consola
+            } else {
+              console.warn('Cart data does not contain reservations:', cart);
+            }
+          } catch (error) {
+            console.error('Error al obtener el carrito:', error);
+            setErrorMessage('Error al obtener el carrito. Intente nuevamente más tarde.');
+          }
+        };
+        
+        fetchCart(userId);
 
         // Verificar si existe un redirect pendiente
         const redirectTo = location.state?.redirectTo || '/';
