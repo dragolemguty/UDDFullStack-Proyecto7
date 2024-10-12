@@ -1,14 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 const BACKEND_URL = import.meta.env.VITE_URL_BACKEND;
+import { RefreshContext } from '../context/RefreshContext';  // Importar el contexto
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [reservationsCount, setReservationsCount] = useState(0);
   const [reservationsArray, setReservationsArray] = useState([]);
   const navigate = useNavigate();
+  const { shouldRefresh } = useContext(RefreshContext);  // Obtener shouldRefresh del contexto
 
   useEffect(() => {
+    if (shouldRefresh) {
+      console.log("Refrescando desde Navbar...");
+      sessionStorage.removeItem('alreadyRefreshed'); // Asegurarse de limpiar la bandera antes del refresh
+      window.location.reload(); // Si quieres refrescar desde el navbar
+    }
+  }, [shouldRefresh]);
+
+  useEffect(() => {
+
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token); // Establece true si existe token
 
@@ -42,6 +53,7 @@ const Navbar = () => {
     }
   }, []);
 
+
   const handleLogout = async () => {
     const token = localStorage.getItem('token');
     const userId = JSON.parse(atob(token.split('.')[1])).user._id;
@@ -57,6 +69,7 @@ const Navbar = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('reservationsArray');
     localStorage.removeItem('bookingData');
+    sessionStorage.removeItem('alreadyRefreshed'); 
     setIsLoggedIn(false);
     navigate('/login');
   };

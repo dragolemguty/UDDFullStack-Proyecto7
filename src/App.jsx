@@ -8,9 +8,12 @@ import Navbar from './components/navbar';
 import Reserve from './pages/reserve';
 import BookingDetails from './pages/bookingDetails';
 import Cart from './pages/cart';
+import { RefreshProvider } from './context/RefreshContext';  // Importar el proveedor del contexto
+
 
 function App() {
   return (
+    <RefreshProvider>
       <Router>
       <Navbar />
         <Routes>
@@ -23,6 +26,7 @@ function App() {
           <Route path="/booking" element={<BookingDetails />} />
         </Routes>
       </Router>
+    </RefreshProvider>
     
   );
 }

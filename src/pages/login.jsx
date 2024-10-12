@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useContext , useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 const BACKEND_URL = import.meta.env.VITE_URL_BACKEND;
+import { RefreshContext } from '../context/RefreshContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // Estado para manejar mensajes de error
+  const { shouldRefresh, setShouldRefresh } = useContext(RefreshContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -84,6 +86,14 @@ const Login = () => {
         } else {
           navigate(redirectTo); // Solo redirigir a la página correspondiente
         }
+        // Verificar si proviene del flujo de reserva
+        if (sessionStorage.getItem('fromBookingFlow') === 'true') {
+          setShouldRefresh(true); // Actualiza el estado de refresh
+          sessionStorage.removeItem('fromBookingFlow'); // Limpiar la señal de reserva
+        }
+
+
+
       } else {
         setErrorMessage(data.error || 'Error en el inicio de sesión'); // Mostrar error
       }
@@ -92,6 +102,13 @@ const Login = () => {
       setErrorMessage('Error en el servidor. Intente nuevamente más tarde.'); // Mensaje de error general
     }
   };
+
+  useEffect(() => {
+    if (shouldRefresh) {
+      navigate(0); // Forzar un refresh si proviene del flujo de reserva
+      setShouldRefresh(false); // Limpiar la bandera de refresh
+    }
+  }, [shouldRefresh]);
 
   return (
     <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">

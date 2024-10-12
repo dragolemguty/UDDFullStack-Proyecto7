@@ -1,24 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect} from 'react';
+import { RefreshContext } from '../context/RefreshContext';  // Importar el contexto
 
 const Index = () => {
-  const [shouldRefresh, setShouldRefresh] = useState(false);
+  const { setShouldRefresh } = useContext(RefreshContext);  // Obtener setShouldRefresh del contexto
 
   useEffect(() => {
     // Verifica si se accede desde un inicio de sesión o reserva
-    const isFromLoginOrBooking = sessionStorage.getItem('fromLoginOrBooking');
+    const fromLoginOrBooking = sessionStorage.getItem('fromLoginOrBooking');
 
-    // Solo refresca si proviene de un inicio de sesión o reserva
-    if (isFromLoginOrBooking) {
-      sessionStorage.removeItem('fromLoginOrBooking'); // Limpiar la bandera
-      setShouldRefresh(true); // Establecer el estado para refrescar
+    if (fromLoginOrBooking) {
+      sessionStorage.removeItem('fromLoginOrBooking'); // Limpia la señal
+      setShouldRefresh(true);  // Actualiza el estado global para forzar el refresh
+      window.location.reload();  // Refresca la página
     }
-  }, []);
-
-  useEffect(() => {
-    if (shouldRefresh) {
-      window.location.reload(); // Solo refresca una vez
-    }
-  }, [shouldRefresh]);
+  }, [setShouldRefresh]);
 
 
   return (
