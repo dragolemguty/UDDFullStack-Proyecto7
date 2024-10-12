@@ -1,76 +1,65 @@
-// src/components/navbar.jsx
-import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);  // Estado para verificar si el usuario está logueado
-  const [username, setUsername] = useState('');  // Estado para guardar el nombre de usuario
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [reservationsCount, setReservationsCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token); // Establece true si existe token
+
     if (token) {
-      // Hacemos un fetch para verificar el token y obtener el perfil del usuario
-      const fetchProfile = async () => {
+      const fetchReservationsCount = async () => {
         try {
-          const response = await fetch('http://localhost:3000/api/users/me', {
-            method: 'GET',
+          const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/cart/count`, {
             headers: {
-              'Authorization': `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
           });
-
-          if (response.ok) {
-            const data = await response.json();
-            setUsername(data.username);  // Actualizamos el estado con el nombre del usuario
-            setIsLoggedIn(true);  // Si el usuario está autenticado, actualizamos el estado
-          } else {
-            setIsLoggedIn(false);
-          }
+          setReservationsCount(response.data.count);
         } catch (error) {
-          console.error('Error verificando la autenticación:', error);
-          setIsLoggedIn(false);
+          console.error('Error fetching reservations count:', error);
         }
       };
-      fetchProfile();
+
+      fetchReservationsCount();
     }
   }, []);
 
-  // Función para manejar el logout
   const handleLogout = () => {
-    localStorage.removeItem('token');  // Eliminamos el token del localStorage
-    setIsLoggedIn(false);  // Cambiamos el estado para reflejar que el usuario ha salido
-    navigate('/login');  // Redirigimos a la página de login
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    navigate('/login');
   };
 
   return (
-    <nav className="bg-blue-500">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Lado izquierdo del navbar */}
-          <div className="flex items-center">
-            <Link to="/" className="text-white font-bold text-xl">Hotel</Link>
-            <div className="ml-10 flex items-baseline space-x-4">
-              <Link to="/" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Inicio</Link>
-              <Link to="/about" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">About</Link>
-              <Link to="/reserve" className="bg-yellow-400 text-black px-3 py-2 rounded-md text-sm font-medium font-semibold">Reserva Aquí</Link>
+    <nav className="bg-blue-500 p-4 flex justify-between items-center">
+      <div>
+        <a href="/" className="text-white font-bold text-xl">Hotelera Shoebilera</a>
+        <a href="/about" className="ml-4 text-white">About</a>
+        <a href="/reserve" className="ml-4 text-white font-semibold">Reserva aquí</a>
+      </div>
+      <div>
+        {isLoggedIn ? (
+          <>
+            <div className="relative inline-block">
+              <a href="/cart" className="ml-4 text-white font-semibold">Carrito</a>
+              {reservationsCount > 0 && (
+                <span className="absolute top-0 right-0 bg-red-600 text-white rounded-full px-1 text-xs">{reservationsCount}</span>
+              )}
             </div>
-          </div>
-          {/* Lado derecho del navbar */}
-          <div className="flex items-center space-x-4">
-            {isLoggedIn ? (
-              <>
-                <Link to="/profile" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Mi Perfil ({username})</Link>
-                <button onClick={handleLogout} className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Logout</button>
-              </>
-            ) : (
-              <>
-                <Link to="/signup" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Signup</Link>
-                <Link to="/login" className="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Login</Link>
-              </>
-            )}
-          </div>
-        </div>
+            <a href="/profile" className="text-white mr-4">Mi Perfil</a>
+            <button onClick={handleLogout} className="bg-red-500 text-white py-2 px-4 rounded">Logout</button>
+          </>
+        ) : (
+          <>
+            <a href="/signup" className="text-white mr-4">Signup</a>
+            <a href="/login" className="bg-white text-blue-500 py-2 px-4 rounded">Login</a>
+          </>
+        )}
       </div>
     </nav>
   );

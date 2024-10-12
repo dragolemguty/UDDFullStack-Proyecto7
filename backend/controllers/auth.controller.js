@@ -6,13 +6,14 @@ require("dotenv").config();
 
 const signup = async (req, res) => {
   try {
-    const { name, username, password, active } = req.body;
+    const { name, email, username, password, active } = req.body;
 
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
 
     const nuevoUsuario = await User.create({
       name,
+      email,
       username,
       password: hashedPassword,
       active,
@@ -26,9 +27,9 @@ const signup = async (req, res) => {
 };
 
 const signin = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   try {
-    const theUser = await User.findOne({ username });
+    const theUser = await User.findOne({ email });
     if (!theUser) {
       return res.status(400).json({ message: 'El nombre de usuario no existe' });
     }
@@ -45,7 +46,7 @@ const signin = async (req, res) => {
     jwt.sign(
       payload,
       process.env.SECRET,  // Asegúrate de que este valor esté en tu archivo .env
-      { expiresIn: '1h' },  // Duración del token
+      { expiresIn: '15m' },  // Duración del token
       (error, token) => {
         if (error) {
           console.error('Error generando el token:', error);

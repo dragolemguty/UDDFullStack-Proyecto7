@@ -13,7 +13,7 @@ const { createInitialRooms, findAllRooms, findRoomById, updateRoom, deleteRoom }
 
 /**
  * @swagger
- * /habitaciones/init:
+ * /rooms/init:
  *   get:
  *     summary: Poblar la base de datos con habitaciones iniciales
  *     tags: [Room]
@@ -31,12 +31,10 @@ router.get("/init", createInitialRooms); // Poblar con habitaciones iniciales
 
 /**
  * @swagger
- * /habitaciones:
+ * /rooms:
  *   get:
  *     summary: Obtener todas las habitaciones
  *     tags: [Room]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de todas las habitaciones
@@ -47,11 +45,11 @@ router.get("/init", createInitialRooms); // Poblar con habitaciones iniciales
  *               items:
  *                 $ref: '#/components/schemas/Room'
  */
-router.get("/", auth, findAllRooms); // Obtener todas las habitaciones
+router.get("/", findAllRooms); // Obtener todas las habitaciones
 
 /**
  * @swagger
- * /habitaciones/{id}:
+ * /rooms/{id}:
  *   get:
  *     summary: Obtener una habitación por ID
  *     tags: [Room]
@@ -78,7 +76,7 @@ router.get("/:id", auth, findRoomById); // Obtener una habitación por ID
 
 /**
  * @swagger
- * /habitaciones/{id}:
+ * /rooms/{id}:
  *   put:
  *     summary: Actualizar una habitación
  *     tags: [Room]
@@ -111,7 +109,7 @@ router.put("/:id", auth, updateRoom); // Actualizar una habitación
 
 /**
  * @swagger
- * /habitaciones/{id}:
+ * /rooms/{id}:
  *   delete:
  *     summary: Eliminar una habitación
  *     tags: [Room]

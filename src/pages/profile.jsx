@@ -12,7 +12,7 @@ const Profile = () => {
     } else {
       const fetchProfile = async () => {
         try {
-          const response = await fetch('http://localhost:3000/api/users/me', {  // Aquí usamos /me
+          const response = await fetch('http://localhost:3000/api/users/me', {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`
@@ -21,16 +21,15 @@ const Profile = () => {
 
           if (response.ok) {
             const data = await response.json();
-            // Asignamos directamente el username del objeto data
-            setUsername(data.username);  
+            setUsername(data.username);
           } else {
             localStorage.removeItem('token');
-            navigate('/login'); // Si el token no es válido, redirige a login
+            navigate('/login');
           }
         } catch (error) {
           console.error('Error obteniendo el perfil:', error);
           localStorage.removeItem('token');
-          navigate('/login'); // Si hay error, redirige a loginn
+          navigate('/login');
         }
       };
 
@@ -39,9 +38,9 @@ const Profile = () => {
   }, [navigate]);
 
   return (
-    <div>
-      <h1>Perfil de {username}</h1>
-      <p>Información dummy sobre el hotel.</p>
+    <div className="max-w-md mx-auto mt-10 bg-white shadow-md rounded-lg p-6">
+      <h1 className="text-2xl font-bold mb-4">Perfil de {username}</h1>
+      <p className="text-gray-700">Información sobre el usuario y el hotel.</p>
     </div>
   );
 };

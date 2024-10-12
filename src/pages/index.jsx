@@ -1,5 +1,26 @@
-// src/pages/index.jsx
+import { useEffect, useState } from 'react';
+
 const Index = () => {
+  const [shouldRefresh, setShouldRefresh] = useState(false);
+
+  useEffect(() => {
+    // Verifica si se accede desde un inicio de sesión o reserva
+    const isFromLoginOrBooking = sessionStorage.getItem('fromLoginOrBooking');
+
+    // Solo refresca si proviene de un inicio de sesión o reserva
+    if (isFromLoginOrBooking) {
+      sessionStorage.removeItem('fromLoginOrBooking'); // Limpiar la bandera
+      setShouldRefresh(true); // Establecer el estado para refrescar
+    }
+  }, []);
+
+  useEffect(() => {
+    if (shouldRefresh) {
+      window.location.reload(); // Solo refresca una vez
+    }
+  }, [shouldRefresh]);
+
+
   return (
     <div className="bg-blue-50 min-h-screen">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
