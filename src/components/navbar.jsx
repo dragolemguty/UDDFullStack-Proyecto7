@@ -5,11 +5,35 @@ const BACKEND_URL = import.meta.env.VITE_URL_BACKEND;
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [reservationsCount, setReservationsCount] = useState(0);
+  const [reservationsArray, setReservationsArray] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token); // Establece true si existe token
+
+    if (token) {
+      const savedReservations = localStorage.getItem('reservationsArray');
+      if (savedReservations) {
+        setReservationsArray(JSON.parse(savedReservations));
+      } else {
+        // Si no hay carrito en localStorage, podrías considerar cargarlo desde el backend
+        const userId = JSON.parse(atob(token.split('.')[1])).user._id;
+        fetch(`${BACKEND_URL}/cart/${userId}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.cart && data.cart.reservations) {
+              const parsedReservations = JSON.parse(data.cart.reservations);
+              const normalizedReservations = parsedReservations.map(reservation => {
+                return reservation;
+              });        
+              localStorage.setItem('reservationsArray', JSON.stringify(normalizedReservations));
+              setReservationsArray(data.cart.reservations);
+            }
+          })
+        }
+      }
+
 
     const savedBookings = localStorage.getItem('bookingData');
     if (savedBookings) {
