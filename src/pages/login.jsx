@@ -73,7 +73,7 @@ const Login = () => {
           }
         };
         
-        fetchCart(userId);
+        await fetchCart(userId);
 
         // Verificar si existe un redirect pendiente
         const redirectTo = location.state?.redirectTo || '/';
