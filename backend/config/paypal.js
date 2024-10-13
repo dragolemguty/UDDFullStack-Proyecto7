@@ -1,9 +1,13 @@
 const checkoutNodeJssdk = require('@paypal/checkout-server-sdk');
 
-const environment = new checkoutNodeJssdk.core.SandboxEnvironment(
-    process.env.PAYPAL_CLIENT_ID, 
-    process.env.PAYPAL_CLIENT_SECRET
-);
-const client = new checkoutNodeJssdk.core.PayPalHttpClient(environment);
+let clientId = process.env.PAYPAL_CLIENT_ID;
+let clientSecret = process.env.PAYPAL_CLIENT_SECRET;
 
-module.exports = { client };
+// Crea un ambiente sandbox o live según corresponda
+let environment = new checkoutNodeJssdk.core.SandboxEnvironment(clientId, clientSecret);
+// Si es para producción, usar:
+// let environment = new checkoutNodeJssdk.core.LiveEnvironment(clientId, clientSecret);
+
+let client = new checkoutNodeJssdk.core.PayPalHttpClient(environment);
+
+module.exports = { client, orders: checkoutNodeJssdk.orders };

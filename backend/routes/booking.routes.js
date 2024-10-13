@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const auth = require('../middleware/authorization');
+const auth = require('../middleware/authorization3');
 
 const { createInitialBookings, createBooking, findToday, bookDetails, updateRoom, deleteBook, 
     hotelFilter, datesFilter, roomClassFilter, paidStatus, qtySearch } = require("../controllers/booking.controller");
