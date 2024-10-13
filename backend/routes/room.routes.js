@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const auth = require('../middleware/authorization'); // Middleware de autenticación
+const auth = require('../middleware/authorization3'); // Middleware de autenticación
 
 const { createInitialRooms, findAllRooms, findRoomById, updateRoom, deleteRoom } = require("../controllers/room.controller");
 

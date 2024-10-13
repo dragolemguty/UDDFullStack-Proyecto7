@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { swaggerDocs, swaggerUi } = require("../swaggerConfig");
-const auth2 = require('../middleware/authorization2');
+const auth2 = require('../middleware/authorization3');
 const auth = require('../middleware/authorization');
 
 
@@ -12,8 +12,9 @@ const guestEventRouter = require("./guestEvent.routes");
 const guestRankRouter = require("./guestRank.routes");
 const authRoutes = require("./auth.routes");
 const userRoutes = require("./user.routes");
-const payRoutes = require('./pay.routes'); // Importamos las rutas de carrito
+const payRoutes = require('./payment.routes'); // 
 const cartRoutes = require('./cart.routes'); // Importamos las rutas de carrito
+
 
 router.get('/users/me', auth2, async (req, res) => {
     try {
