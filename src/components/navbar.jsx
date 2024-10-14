@@ -92,6 +92,7 @@ const Navbar = () => {
               )}
             </div>
             <a href="/profile" className="text-white mr-4">Mi Perfil</a>
+            <a href="/MisReservas" className="text-white mr-4">Mis Reservas</a>
             <button onClick={handleLogout} className="bg-red-500 text-white py-2 px-4 rounded">Logout</button>
           </>
         ) : (

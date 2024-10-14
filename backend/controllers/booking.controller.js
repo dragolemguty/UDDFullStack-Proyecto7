@@ -182,10 +182,10 @@ const createBooking = async (req, res) => {
       id_room_array, 
       arrival_date, 
       departure_date, 
-      guests_qty 
+      guests_qty,
+      booking_date
     } = req.body;
 
-    const booking_date = moment().format('YYYY-MM-DD');
     const nights_qty = moment(departure_date).diff(moment(arrival_date), 'days');
     const last_update_datetime = moment().format('YYYY-MM-DD hh:mm:ss');
 
@@ -377,7 +377,23 @@ const qtySearch = async (req, res) => {
   }
 };
 
+
+const getUserBookings = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Buscar todas las reservas asociadas al usuario
+    const bookings = await Booking.find({ id_guest: userId }).populate('id_room_array');
+
+    // Enviar respuesta
+    return res.status(200).json(bookings);
+  } catch (error) {
+    return res.status(500).json({ message: 'Error al obtener las reservas del usuario', error });
+  }
+};
+
 module.exports = {
+  getUserBookings,
   createInitialBookings,
   createBooking,
   findToday,

@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const auth = require('../middleware/authorization3');
-const auth2 = require('../middleware/authorization2');
 
 const { createInitialUser, findAll, findOne, create, update, remove } = require("../controllers/user.controller");
 

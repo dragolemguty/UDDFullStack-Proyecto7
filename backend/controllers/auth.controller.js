@@ -46,7 +46,7 @@ const signin = async (req, res) => {
     jwt.sign(
       payload,
       process.env.SECRET,  // Asegúrate de que este valor esté en tu archivo .env
-      { expiresIn: '15m' },  // Duración del token
+      { expiresIn: '1h' },  // Duración del token
       (error, token) => {
         if (error) {
           console.error('Error generando el token:', error);

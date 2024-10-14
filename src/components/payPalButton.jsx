@@ -1,12 +1,62 @@
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const BACKEND_URL = import.meta.env.VITE_URL_BACKEND;
 
-const PayPalButton = ({ total, bookings }) => {
+const handlePayment = async (order, bookings, token, setTransactionStatus, setIsCaptured) => {
+  // Transformar las reservas
+  const formattedBookings = bookings.map(booking => ({
+    id_guest: booking.id_guest, // Este debería ser un string válido de ObjectId
+    id_room_array: booking.id_room_array, // Asegúrate de que sea un array de ObjectIds válidos
+    arrival_date: booking.arrival_date,
+    departure_date: booking.departure_date,
+    guests_qty: booking.guests_qty,
+    nights_qty: booking.nights_qty,
+    price: booking.price,
+    booking_date: booking.booking_date
+  }));
+
+  try {
+    const response = await axios.post(
+      `${BACKEND_URL}/pay/capture-payment/${order.id}`,
+      { bookings: formattedBookings }, // Envío de bookings formateados
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log('Respuesta del servidor:', response);
+
+    if (response.status === 200 || response.status === 201) {
+      setTransactionStatus('Transacción completada con éxito');
+      setIsCaptured(true);
+      alert('Transacción completada con éxito');
+      // Limpiar localStorage
+      localStorage.removeItem('reservationsArray'); // Limpiar el carrito de compras
+
+      // Redirigir a /MisReservas
+      navigate('/MisReservas');
+      
+    } else {
+      setTransactionStatus('Transacción fallida');
+      alert('Transacción fallida: ' + response.data.message);
+    }
+  } catch (error) {
+    setTransactionStatus('Error al capturar el pago');
+    console.error('Error details:', error.response || error.message);
+    alert('Error al capturar el pago: ' + (error.response?.data?.message || error.message));
+  }
+};
+
+const PayPalButton = ({ total }) => {
+  const bookings = JSON.parse(localStorage.getItem('reservationsArray')) || []; // Asegúrate de parsear el array de reservas
   const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
   const [transactionStatus, setTransactionStatus] = useState('');
+  const [isCaptured, setIsCaptured] = useState(false); // Nueva bandera para evitar capturas repetidas
 
   return (
     <PayPalScriptProvider options={{ "client-id": paypalClientId }}>
@@ -21,36 +71,18 @@ const PayPalButton = ({ total, bookings }) => {
           });
         }}
         onApprove={async (data, actions) => {
-          const order = await actions.order.capture();
-          try {
-            // Obtén el token del almacenamiento local o donde sea que lo estés guardando
-            const token = localStorage.getItem('token');
-
-            // Envía la información del pago junto con los bookings al backend, incluyendo el token en los headers
-            console.log('Bookings:', bookings);
-            const response = await axios.post(
-              `${BACKEND_URL}/pay/capture-payment/${order.id}`, 
-              { bookings }, 
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`  // Asegúrate de que el token JWT esté incluido aquí
-                }
-              }
-            );
-            // Verifica la respuesta del servidor
-            if (response.status === 200) {
-              setTransactionStatus('Transacción completada con éxito');
-              alert('Transacción completada con éxito');
-            } else {
-              setTransactionStatus('Transacción fallida');
-              alert('Transacción fallida: ' + response.data.message);
-            }
-          } catch (error) {
-            setTransactionStatus('Error al capturar el pago');
-            // Captura el error y muestra un mensaje
-            console.error('Error details:', error.response); // Para ver detalles del error en la consola
-            alert('Error al capturar el pago: ' + (error.response?.data?.message || error.message));
+          if (isCaptured) {
+            console.log('La orden ya ha sido capturada, evitando captura duplicada.');
+            return;
           }
+
+          const order = await actions.order.capture();
+          console.log('Capturando la orden:', order); // Esto te dirá si estás capturando una orden que ya fue procesada.
+
+          const token = localStorage.getItem('token');
+
+          // Llamar a la función handlePayment
+          await handlePayment(order, bookings, token, setTransactionStatus, setIsCaptured);
         }}
       />
       {transactionStatus && <p>{transactionStatus}</p>} {/* Muestra el estado de la transacción */}
