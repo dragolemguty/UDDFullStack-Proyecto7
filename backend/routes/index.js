@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { swaggerDocs, swaggerUi } = require("../swaggerConfig");
 const auth2 = require('../middleware/authorization3');
-const auth = require('../middleware/authorization');
 
 
 const bookingRouter = require("./booking.routes");

@@ -6,6 +6,7 @@ import Profile from './pages/profile';
 import Index from './pages/index';
 import Navbar from './components/navbar';
 import Reserve from './pages/reserve';
+import MisReservas from './pages/misReservas';
 import BookingDetails from './pages/bookingDetails';
 import Cart from './pages/cart';
 import { RefreshProvider } from './context/RefreshContext';  // Importar el proveedor del contexto
@@ -23,6 +24,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/reserve" element={<Reserve />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/MisReservas" element={<MisReservas />} />
           <Route path="/booking" element={<BookingDetails />} />
         </Routes>
       </Router>

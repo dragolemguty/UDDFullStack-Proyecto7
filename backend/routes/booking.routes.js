@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require('../middleware/authorization3');
 
-const { createInitialBookings, createBooking, findToday, bookDetails, updateRoom, deleteBook, 
+const { getUserBookings,createInitialBookings, createBooking, findToday, bookDetails, updateRoom, deleteBook, 
     hotelFilter, datesFilter, roomClassFilter, paidStatus, qtySearch } = require("../controllers/booking.controller");
 
 const handleQueryParams = (req, res, next) => {
@@ -168,5 +168,7 @@ router.put("/:id", auth, updateRoom);
  *         description: Reserva eliminada con éxito
  */
 router.delete("/:id", auth, deleteBook);
+
+router.get('/user-bookings', getUserBookings);
 
 module.exports = router;
