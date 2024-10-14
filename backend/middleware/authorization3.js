@@ -19,6 +19,8 @@ const auth = async (req, res, next) => {
       }
 
       req.user = user;  // Asigna el usuario al objeto req
+      //console.log('req.user',req.user)
+      //console.log('req.user.ID',req.user._id)
       next();
   } catch (error) {
       console.error('Error en la autenticación:', error);

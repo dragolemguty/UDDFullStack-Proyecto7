@@ -2,8 +2,10 @@ const express = require("express");
 const router = express.Router();
 const auth = require('../middleware/authorization3');
 
-const { getUserBookings,createInitialBookings, createBooking, findToday, bookDetails, updateRoom, deleteBook, 
+const { createInitialBookings, createBooking, findToday, bookDetails, updateRoom, deleteBook, 
     hotelFilter, datesFilter, roomClassFilter, paidStatus, qtySearch } = require("../controllers/booking.controller");
+
+
 
 const handleQueryParams = (req, res, next) => {
     const { hotel, fecha_inicio, fecha_fin, tipo_habitacion, estado, num_huespedes } = req.query;
@@ -169,6 +171,6 @@ router.put("/:id", auth, updateRoom);
  */
 router.delete("/:id", auth, deleteBook);
 
-router.get('/user-bookings', getUserBookings);
+
 
 module.exports = router;

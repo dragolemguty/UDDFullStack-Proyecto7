@@ -103,6 +103,9 @@ const createInitialBookings = async (req, res) => {
   }
 };
 
+
+
+
 // Obtener todas las reservas
 const findAllBookings = async (req, res) => {
   try {
@@ -378,22 +381,10 @@ const qtySearch = async (req, res) => {
 };
 
 
-const getUserBookings = async (req, res) => {
-  try {
-    const userId = req.user._id;
 
-    // Buscar todas las reservas asociadas al usuario
-    const bookings = await Booking.find({ id_guest: userId }).populate('id_room_array');
-
-    // Enviar respuesta
-    return res.status(200).json(bookings);
-  } catch (error) {
-    return res.status(500).json({ message: 'Error al obtener las reservas del usuario', error });
-  }
-};
 
 module.exports = {
-  getUserBookings,
+  
   createInitialBookings,
   createBooking,
   findToday,

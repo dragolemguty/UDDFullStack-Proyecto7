@@ -5,7 +5,10 @@ import { useNavigate } from 'react-router-dom';
 
 const BACKEND_URL = import.meta.env.VITE_URL_BACKEND;
 
-const handlePayment = async (order, bookings, token, setTransactionStatus, setIsCaptured) => {
+
+
+const handlePayment = async (order, bookings, token, setTransactionStatus, setIsCaptured,navigate) => {
+  
   // Transformar las reservas
   const formattedBookings = bookings.map(booking => ({
     id_guest: booking.id_guest, // Este debería ser un string válido de ObjectId
@@ -17,6 +20,8 @@ const handlePayment = async (order, bookings, token, setTransactionStatus, setIs
     price: booking.price,
     booking_date: booking.booking_date
   }));
+
+  
 
   try {
     const response = await axios.post(
@@ -37,6 +42,14 @@ const handlePayment = async (order, bookings, token, setTransactionStatus, setIs
       alert('Transacción completada con éxito');
       // Limpiar localStorage
       localStorage.removeItem('reservationsArray'); // Limpiar el carrito de compras
+      const userId = JSON.parse(atob(token.split('.')[1])).user._id;
+      const reservations = localStorage.getItem('reservationsArray');
+      await fetch(`${BACKEND_URL}/cart`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, reservations }),
+      });
+    
 
       // Redirigir a /MisReservas
       navigate('/MisReservas');
@@ -57,6 +70,7 @@ const PayPalButton = ({ total }) => {
   const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
   const [transactionStatus, setTransactionStatus] = useState('');
   const [isCaptured, setIsCaptured] = useState(false); // Nueva bandera para evitar capturas repetidas
+  const navigate = useNavigate();
 
   return (
     <PayPalScriptProvider options={{ "client-id": paypalClientId }}>
@@ -82,7 +96,7 @@ const PayPalButton = ({ total }) => {
           const token = localStorage.getItem('token');
 
           // Llamar a la función handlePayment
-          await handlePayment(order, bookings, token, setTransactionStatus, setIsCaptured);
+          await handlePayment(order, bookings, token, setTransactionStatus, setIsCaptured,navigate);
         }}
       />
       {transactionStatus && <p>{transactionStatus}</p>} {/* Muestra el estado de la transacción */}

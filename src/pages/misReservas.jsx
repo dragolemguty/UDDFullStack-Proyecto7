@@ -15,7 +15,7 @@ const MisReservas = () => {
     const fetchUserBookings = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`${BACKEND_URL}/booking/user-bookings`, {
+        const response = await axios.get(`${BACKEND_URL}/reservas/user-bookings`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -75,7 +75,6 @@ const MisReservas = () => {
                   <p>Fecha de llegada: {new Date(reserva.arrival_date).toLocaleDateString()}</p>
                   <p>Fecha de salida: {new Date(reserva.departure_date).toLocaleDateString()}</p>
                   <p>Cantidad de huéspedes: {reserva.guests_qty}</p>
-                  <p>Total: {reserva.price * reserva.nights_qty} {reserva.currency}</p>
                 </div>
               ))}
             </div>
@@ -92,7 +91,6 @@ const MisReservas = () => {
                   <p>Fecha de llegada: {new Date(reserva.arrival_date).toLocaleDateString()}</p>
                   <p>Fecha de salida: {new Date(reserva.departure_date).toLocaleDateString()}</p>
                   <p>Cantidad de huéspedes: {reserva.guests_qty}</p>
-                  <p>Total: {reserva.price * reserva.nights_qty} {reserva.currency}</p>
                 </div>
               ))}
             </div>
@@ -109,7 +107,6 @@ const MisReservas = () => {
                   <p>Fecha de llegada: {new Date(reserva.arrival_date).toLocaleDateString()}</p>
                   <p>Fecha de salida: {new Date(reserva.departure_date).toLocaleDateString()}</p>
                   <p>Cantidad de huéspedes: {reserva.guests_qty}</p>
-                  <p>Total: {reserva.price * reserva.nights_qty} {reserva.currency}</p>
                 </div>
               ))}
             </div>
