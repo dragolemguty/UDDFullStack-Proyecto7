@@ -4,6 +4,8 @@ const BACKEND_URL = import.meta.env.VITE_URL_BACKEND;
 
 const Profile = () => {
   const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +25,8 @@ const Profile = () => {
           if (response.ok) {
             const data = await response.json();
             setUsername(data.username);
+            setName(data.name);
+            setEmail(data.email);
           } else {
             localStorage.removeItem('token');
             navigate('/login');
@@ -41,7 +45,11 @@ const Profile = () => {
   return (
     <div className="max-w-md mx-auto mt-10 bg-white shadow-md rounded-lg p-6">
       <h1 className="text-2xl font-bold mb-4">Perfil de {username}</h1>
-      <p className="text-gray-700">Información sobre el usuario y el hotel.</p>
+      <br/>
+      <p className="text-gray-700">Información sobre el usuario</p>
+      <br/>
+      <p className="text-gray-700">Nombre: {name}</p>
+      <p className="text-gray-700">Email: {email}</p>
     </div>
   );
 };

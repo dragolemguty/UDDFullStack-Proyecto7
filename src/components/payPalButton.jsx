@@ -39,7 +39,7 @@ const handlePayment = async (order, bookings, token, setTransactionStatus, setIs
     if (response.status === 200 || response.status === 201) {
       setTransactionStatus('Transacción completada con éxito');
       setIsCaptured(true);
-      alert('Transacción completada con éxito');
+      //alert('Transacción completada con éxito');
       // Limpiar localStorage
       localStorage.removeItem('reservationsArray'); // Limpiar el carrito de compras
       const userId = JSON.parse(atob(token.split('.')[1])).user._id;
