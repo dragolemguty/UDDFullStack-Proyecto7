@@ -72,7 +72,6 @@ const Navbar = () => {
     navigate('/login');
   };
 
-
   return (
     <nav className="bg-blue-500 p-5 flex justify-between items-center h-16">
       <div className="flex items-center">
@@ -80,7 +79,10 @@ const Navbar = () => {
         <a href="/about" className="ml-6 text-white">About</a>
         <a href="/reserve" className="ml-6 text-white font-semibold">Reserva aquí</a>
       </div>
-      <div className="flex-grow m-16"></div>
+      
+      {/* Bloque vacío para separación */}
+      <div className="flex-grow"></div>
+  
       <div className="flex items-center">
         {isLoggedIn ? (
           <>
@@ -103,6 +105,7 @@ const Navbar = () => {
       </div>
     </nav>
   );
+  
 };  
 
 export default Navbar;
