@@ -80,7 +80,7 @@ const Navbar = () => {
         <a href="/reserve" className="ml-6 text-white font-semibold">Reserva aquí</a>
       </div>
       
-      {/* Bloque vacío para separación */}
+      {/* Bloque vacío para searación */}
       <div className="flex-grow"></div>
   
       <div className="flex items-center">

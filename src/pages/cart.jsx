@@ -91,7 +91,7 @@ const Cart = () => {
             </div>
             <button
               onClick={() => navigate('/reserve')}
-              className="bg-blue-500 text-white px-6 py-2 rounded-lg mt-4 w-full max-w-md" // Ajusta el tamaño del botón de reserva
+              className="bg-blue-500 text-white px-6 py-2 rounded-lg mt-4 w-full max-w-md" // Ajusta eltamaño del botón de reserva
             >
               Agrega otra reserva
             </button>
