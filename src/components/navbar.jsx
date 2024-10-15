@@ -44,14 +44,12 @@ const Navbar = () => {
           })
         }
       }
-
-
-    const savedBookings = localStorage.getItem('bookingData');
-    if (savedBookings) {
-      const bookingsArray = JSON.parse(savedBookings);
-      setReservationsCount(bookingsArray.length); // Establece el número de reservas
-    }
   }, []);
+
+  useEffect(() => {
+    setReservationsCount(reservationsArray.length);  // Actualiza el número de reservas basado en la longitud del array
+  }, [reservationsArray]); // Este efecto se ejecutará cada vez que cambie reservationsArray
+
 
 
   const handleLogout = async () => {
@@ -76,34 +74,35 @@ const Navbar = () => {
 
 
   return (
-    <nav className="bg-blue-500 p-4 flex justify-between items-center">
-      <div>
+    <nav className="bg-blue-500 p-5 flex justify-between items-center h-16">
+      <div className="flex items-center">
         <a href="/" className="text-white font-bold text-xl">Hotelera Shoebilera</a>
-        <a href="/about" className="ml-4 text-white">About</a>
-        <a href="/reserve" className="ml-4 text-white font-semibold">Reserva aquí</a>
+        <a href="/about" className="ml-6 text-white">About</a>
+        <a href="/reserve" className="ml-6 text-white font-semibold">Reserva aquí</a>
       </div>
-      <div>
+      <div className="flex-grow m-16"></div>
+      <div className="flex items-center">
         {isLoggedIn ? (
           <>
             <div className="relative inline-block">
-              <a href="/cart" className="ml-4 text-white font-semibold">Carrito</a>
+              <a href="/cart" className="ml-6 text-white font-semibold">Carrito</a>
               {reservationsCount > 0 && (
-                <span className="absolute top-0 right-0 bg-red-600 text-white rounded-full px-1 text-xs">{reservationsCount}</span>
+                <span className="ml-2 bg-red-600 text-white rounded-full px-1 text-xs">{reservationsCount}</span>
               )}
             </div>
-            <a href="/profile" className="text-white mr-4">Mi Perfil</a>
-            <a href="/MisReservas" className="text-white mr-4">Mis Reservas</a>
-            <button onClick={handleLogout} className="bg-red-500 text-white py-2 px-4 rounded">Logout</button>
+            <a href="/profile" className="ml-6 text-white">Mi Perfil</a>
+            <a href="/MisReservas" className="ml-6 text-white">Mis Reservas</a>
+            <button onClick={handleLogout} className="ml-6 bg-red-500 text-white py-2 px-4 rounded">Logout</button>
           </>
         ) : (
           <>
-            <a href="/signup" className="text-white mr-4">Signup</a>
-            <a href="/login" className="text-white">Login</a>
+            <a href="/signup" className="ml-6 text-white">Signup</a>
+            <a href="/login" className="ml-6 text-white">Login</a>
           </>
         )}
       </div>
     </nav>
   );
-};
+};  
 
 export default Navbar;

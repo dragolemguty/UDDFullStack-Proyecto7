@@ -43,7 +43,7 @@ const Cart = () => {
   };
 
   // Calcular el monto total
-  const totalAmount = reservations.reduce((acc, reservation) => acc + (reservation.price * reservation.nights_qty), 0);
+  const totalAmount = reservations.reduce((acc, reservation) => acc + (reservation.price), 0);
 
   return (
     <div className="container mx-auto p-4">

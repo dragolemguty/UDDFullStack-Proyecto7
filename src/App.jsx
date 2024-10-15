@@ -8,6 +8,7 @@ import Navbar from './components/navbar';
 import Reserve from './pages/reserve';
 import MisReservas from './pages/misReservas';
 import BookingDetails from './pages/bookingDetails';
+import About from './pages/about';
 import Cart from './pages/cart';
 import { RefreshProvider } from './context/RefreshContext';  // Importar el proveedor del contexto
 
@@ -20,6 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/reserve" element={<Reserve />} />
