@@ -48,7 +48,7 @@ const Cart = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Carrito de Compras</h1>
-
+  
       {/* Mostrar mensaje si el carrito está vacío */}
       {reservations.length === 0 ? (
         <div>
@@ -69,7 +69,7 @@ const Cart = () => {
                 <p>{reservation.nights_qty} noches</p>
                 <p>{reservation.price} {reservation.currency} por noche</p>
                 <p>Total: {reservation.price * reservation.nights_qty} {reservation.currency}</p>
-
+  
                 {/* Botón para eliminar la reserva */}
                 <button
                   onClick={() => handleDeleteReservation(index)}
@@ -80,16 +80,18 @@ const Cart = () => {
               </li>
             ))}
           </ul>
-
+  
           {/* Mostrar el total general de todas las reservas */}
           <p className="text-lg font-bold">Total a pagar: {totalAmount} {reservations[0]?.currency}</p>
-
-          {/* Botones de acciones */}
-          <div className="mt-4">
-            <PayPalButton total={totalAmount} />
+  
+          {/* Botones de acciones centrados */}
+          <div className="flex flex-col items-center mt-4">
+            <div className="w-full max-w-md"> {/* Limitar el ancho del botón de PayPal */}
+              <PayPalButton total={totalAmount} />
+            </div>
             <button
               onClick={() => navigate('/reserve')}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg ml-4"
+              className="bg-blue-500 text-white px-6 py-2 rounded-lg mt-4 w-full max-w-md" // Ajusta eltamaño del botón de reserva
             >
               Agrega otra reserva
             </button>
@@ -98,6 +100,6 @@ const Cart = () => {
       )}
     </div>
   );
-};
+}
 
 export default Cart;
