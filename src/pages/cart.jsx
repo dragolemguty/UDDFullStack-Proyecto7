@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import PayPalButton from '../components/PayPalButton';
+import PayPalButton from '../components/payPalButton';
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
